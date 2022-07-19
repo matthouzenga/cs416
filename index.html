@@ -1,0 +1,25 @@
+<html>
+<script src='https://d3js.org/d3.v5.min.js'></script>
+<style> path {stroke: black;}</style>
+<body>
+<svg width=300 height=300>
+</svg>
+<script>
+var data = [4,8,15,16,23,42];
+var color = ['pink','lightyellow','lightgreen','lightcyan','lightblue','violet'];
+var pie = d3.pie();
+var arc = d3.arc().innerRadius(0).outerRadius(100);
+
+var margin = 150;
+d3.select('svg').append('g')
+ .attr('transform','translate('+margin+','+margin+')')
+ .selectAll()
+ .data(pie(data))
+ .enter()
+ .append('path')
+ .attr("d",arc)
+ .attr('fill',function(d,i) {return color[i];});
+
+</script>
+</body>
+</html>
