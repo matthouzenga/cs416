@@ -1,24 +1,296 @@
-<html>
-<script src='https://d3js.org/d3.v5.min.js'></script>
-<style> path {stroke: black;}</style>
-<body>
-<svg width=300 height=300>
-</svg>
-<script>
-var data = [4,8,15,16,23,42];
-var color = ['pink','lightyellow','lightgreen','lightcyan','lightblue','violet'];
-var pie = d3.pie();
-var arc = d3.arc().innerRadius(0).outerRadius(100);
+<!DOCTYPE html>
+<script src="http://d3js.org/d3.v5.min.js"></script>
+<script src = "https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 
-var margin = 150;
-d3.select('svg').append('g')
- .attr('transform','translate('+margin+','+margin+')')
- .selectAll()
- .data(pie(data))
- .enter()
- .append('path')
- .attr("d",arc)
- .attr('fill',function(d,i) {return color[i];});
+<style> .chart rect {fill: steelblue }</style>
+
+<html><body>
+<h3>Medina County (OH) Covid 19 Deaths</h3>
+<h4>How did Medina County fare compared to similarly-sized counties in Ohio?</h4>
+<p>Select date to start <span id="data"></span></p>
+<button onclick="chart1()">2020-06-30</button>
+<button onclick="chart2()">2020-12-31</button>
+<button onclick="chart3()">2021-06-30</button>
+<button onclick="chart4()">2021-12-31</button>
+<button onclick="chart5()">2022-06-30</button>
+<svg class=chart width=1000 height=500>
+</svg>
+
+<script>
+var margin = {top: 50, right: 50, bottom: 50, left: 50},
+    width = 1000 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var counties = ["Delaware","Greene","Licking","Medina","Trumbull"]
+
+var xScale = d3.scaleBand().range([0, width]).padding(0.4),
+    yScale = d3.scaleLinear().range([height, 0]);
+
+xScale.domain(counties.map(function(d) { return d; }));
+yScale.domain([0, 1000]);
+
+var svg = d3.select("svg")
+      .append("g")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+//add x axis
+svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(xScale));
+
+svg.append("g")
+    .call(d3.axisLeft(yScale));    
+
+function chart1() {
+//    var data = [15,9,11,32,62];
+    var data = [
+        {"county":"Delaware","deaths":15},
+        {"county":"Greene","deaths":9},
+        {"county":"Licking","deaths":11},
+        {"county":"Medina","deaths":32},
+        {"county":"Trumbull","deaths":62}];
+    document.getElementById("data").innerHTML = "06-30-20";
+    svg.selectAll("rect").remove();
+    d3.select(".annotations").remove()
+
+    d3.select(".chart")
+        .selectAll("rect")
+        .data(data)
+    .enter().append("rect")
+    .attr("width",xScale.bandwidth())
+    .attr("height",function(d){return height-yScale(d.deaths);})
+    .attr("x",function(d){ return margin.left + xScale(d.county); })
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);})
+    .on('mouseover', function (d, i) {
+          d3.select(this).transition()
+               .duration('50')
+               .attr('opacity', '.5'); })
+    .on('mouseout', function (d, i) {
+          d3.select(this).transition()
+               .duration('50')
+               .attr('opacity', '1'); })
+               ;
+
+const annotations = [
+{
+note: {
+    label: "COVID Deaths in Medina County start amongst the lowest.",
+    title: "June 30, 2020",
+    align: "middle",  
+    wrap: 200,  
+    padding: 10   
+},
+color: ["#69b3a2"],
+x: 700,
+y: 400,
+dy: -100,
+dx: 100
+}
+]
+               // Add annotation to the chart
+const makeAnnotations = d3.annotation()
+  .annotations(annotations);
+d3.select(".chart")
+  .append("g")
+  .call(makeAnnotations)
+}
+function chart2() {
+    var data2 = [
+        {"county":"Delaware","deaths":65},
+        {"county":"Greene","deaths":121},
+        {"county":"Licking","deaths":120},
+        {"county":"Medina","deaths":114},
+        {"county":"Trumbull","deaths":264}];
+
+//    document.getElementById("data").innerHTML = data2;
+
+    var svg = d3.select("svg");
+    svg.selectAll("rect").remove();
+    d3.select(".annotations").remove()
+
+    d3.select(".chart")
+        .selectAll("rect")
+        .data(data2)
+    .enter().append("rect")
+    .attr("width",xScale.bandwidth())
+    .attr("height",function(d){return height-yScale(d.deaths);})
+    .attr("x",function(d){ return margin.left + xScale(d.county); })
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);});
+
+
+    const annotations = [
+{
+note: {
+    label: "COVID Deaths in Medina County grow but are still low amongst peers.",
+    title: "December 31, 2020",
+    align: "middle",  
+    wrap: 200,  
+    padding: 10   
+},
+color: ["#69b3a2"],
+x: 700,
+y: 400,
+dy: -100,
+dx: 100
+}
+]
+               // Add annotation to the chart
+const makeAnnotations = d3.annotation()
+  .annotations(annotations);
+d3.select(".chart")
+  .append("g")
+  .call(makeAnnotations)    
+
+}
+
+function chart3() {
+    var data3 = [
+        {"county":"Delaware","deaths":137},
+        {"county":"Greene","deaths":249},
+        {"county":"Licking","deaths":225},
+        {"county":"Medina","deaths":275},
+        {"county":"Trumbull","deaths":485}];
+
+//    document.getElementById("data").innerHTML = data3;
+
+    var svg = d3.select("svg");
+    svg.selectAll("rect").remove();
+    d3.select(".annotations").remove()
+
+    d3.select(".chart")
+        .selectAll("rect")
+        .data(data3)
+    .enter().append("rect")
+    .attr("width",xScale.bandwidth())
+    .attr("height",function(d){return height-yScale(d.deaths);})
+    .attr("x",function(d){ return margin.left + xScale(d.county); })
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);});
+
+
+    const annotations = [
+{
+note: {
+    label: "COVID Deaths in Medina County grow to second highest amongst peers.",
+    title: "June 30, 2021",
+    align: "middle",  
+    wrap: 200,  
+    padding: 10   
+},
+color: ["#69b3a2"],
+x: 650,
+y: 350,
+dy: -100,
+dx: -100
+}
+]
+               // Add annotation to the chart
+const makeAnnotations = d3.annotation()
+  .annotations(annotations);
+d3.select(".chart")
+  .append("g")
+  .call(makeAnnotations)    
+
+}
+
+function chart4() {
+    var data4 = [
+        {"county":"Delaware","deaths":198},
+        {"county":"Greene","deaths":405},
+        {"county":"Licking","deaths":372},
+        {"county":"Medina","deaths":394},
+        {"county":"Trumbull","deaths":705}];
+//    document.getElementById("data").innerHTML = data4;
+
+    var svg = d3.select("svg");
+    svg.selectAll("rect").remove();
+    d3.select(".annotations").remove()
+
+    d3.select(".chart")
+        .selectAll("rect")
+        .data(data4)
+    .enter().append("rect")
+    .attr("width",xScale.bandwidth())
+    .attr("height",function(d){return height-yScale(d.deaths);})
+    .attr("x",function(d){ return margin.left + xScale(d.county); })
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);});
+
+
+    const annotations = [
+{
+note: {
+    label: "COVID Deaths in Medina County remain middle of the pack.",
+    title: "December 31, 2021",
+    align: "middle",  
+    wrap: 200,  
+    padding: 10   
+},
+color: ["#69b3a2"],
+x: 650,
+y: 300,
+dy: -100,
+dx: -100
+}
+]
+               // Add annotation to the chart
+const makeAnnotations = d3.annotation()
+  .annotations(annotations);
+d3.select(".chart")
+  .append("g")
+  .call(makeAnnotations)    
+
+}
+
+function chart5() {
+    var data5 = [
+        {"county":"Delaware","deaths":274},
+        {"county":"Greene","deaths":517},
+        {"county":"Licking","deaths":478},
+        {"county":"Medina","deaths":513},
+        {"county":"Trumbull","deaths":949}];
+
+//    document.getElementById("data").innerHTML = data5;
+
+    var svg = d3.select("svg");
+    svg.selectAll("rect").remove();
+    d3.select(".annotations").remove()
+
+    d3.select(".chart")
+        .selectAll("rect")
+        .data(data5)
+    .enter().append("rect")
+    .attr("width",xScale.bandwidth())
+    .attr("height",function(d){return height-yScale(d.deaths);})
+    .attr("x",function(d){ return margin.left + xScale(d.county); })
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);});
+
+
+    const annotations = [
+{
+note: {
+    label: "COVID Deaths in Medina County are still currently middle of the pack amongst peer counties.",
+    title: "June 30, 2022",
+    align: "middle",  
+    wrap: 200,  
+    padding: 10   
+},
+color: ["#69b3a2"],
+x: 650,
+y: 250,
+dy: -100,
+dx: -100
+}
+]
+               // Add annotation to the chart
+const makeAnnotations = d3.annotation()
+  .annotations(annotations);
+d3.select(".chart")
+  .append("g")
+  .call(makeAnnotations)    
+
+}
 
 </script>
 </body>
