@@ -17,6 +17,10 @@
 </svg>
 
 <script>
+var div = d3.select('body').append('div')   
+    .attr('class', 'tooltip')               
+    .style('opacity', 0);
+
 var margin = {top: 50, right: 50, bottom: 50, left: 50},
     width = 1000 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
@@ -64,15 +68,26 @@ function chart1() {
     .attr("height",function(d){return height-yScale(d.deaths);})
     .attr("x",function(d){ return margin.left + xScale(d.county); })
     .attr("y",function(d) { return margin.top + yScale(d.deaths);})
-    .on('mouseover', function (d, i) {
-          d3.select(this).transition()
-               .duration('50')
-               .attr('opacity', '.5'); })
-    .on('mouseout', function (d, i) {
-          d3.select(this).transition()
-               .duration('50')
-               .attr('opacity', '1'); })
-               ;
+//    .on('mouseover', function (d, i) {
+//          d3.select(this).transition()
+//               .duration('50')
+//               .attr('opacity', '.5'); })
+//    .on('mouseout', function (d, i) {
+//          d3.select(this).transition()
+//               .duration('50')
+//               .attr('opacity', '1'); })
+
+//start tooltip 
+    .on('mouseover', function(d) {      
+            div.transition()        
+                .duration(200)      
+                .style('opacity', .9);      
+            div.html('<p>  deaths:' + d.deaths + '</p>')  
+                .style('left', (d3.event.pageX) + 'px')     
+                .style('top', (d3.event.pageY - 28) + 'px');    
+        });
+//end tooltip 
+
 
 const annotations = [
 {
@@ -118,7 +133,18 @@ function chart2() {
     .attr("width",xScale.bandwidth())
     .attr("height",function(d){return height-yScale(d.deaths);})
     .attr("x",function(d){ return margin.left + xScale(d.county); })
-    .attr("y",function(d) { return margin.top + yScale(d.deaths);});
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);}) //;
+//start tooltip 
+    .on('mouseover', function(d) {      
+        div.transition()        
+            .duration(200)      
+            .style('opacity', .9);      
+        div.html('<p>  deaths:' + d.deaths + '</p>')  
+            .style('left', (d3.event.pageX) + 'px')     
+            .style('top', (d3.event.pageY - 28) + 'px');    
+    });
+//end tooltip 
+    
 
 
     const annotations = [
@@ -167,7 +193,17 @@ function chart3() {
     .attr("width",xScale.bandwidth())
     .attr("height",function(d){return height-yScale(d.deaths);})
     .attr("x",function(d){ return margin.left + xScale(d.county); })
-    .attr("y",function(d) { return margin.top + yScale(d.deaths);});
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);})
+    //start tooltip 
+    .on('mouseover', function(d) {      
+            div.transition()        
+                .duration(200)      
+                .style('opacity', .9);      
+            div.html('<p>  deaths:' + d.deaths + '</p>')  
+                .style('left', (d3.event.pageX) + 'px')     
+                .style('top', (d3.event.pageY - 28) + 'px');    
+        });
+//end tooltip 
 
 
     const annotations = [
@@ -215,7 +251,17 @@ function chart4() {
     .attr("width",xScale.bandwidth())
     .attr("height",function(d){return height-yScale(d.deaths);})
     .attr("x",function(d){ return margin.left + xScale(d.county); })
-    .attr("y",function(d) { return margin.top + yScale(d.deaths);});
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);})
+    //start tooltip 
+    .on('mouseover', function(d) {      
+            div.transition()        
+                .duration(200)      
+                .style('opacity', .9);      
+            div.html('<p>  deaths:' + d.deaths + '</p>')  
+                .style('left', (d3.event.pageX) + 'px')     
+                .style('top', (d3.event.pageY - 28) + 'px');    
+        });
+//end tooltip 
 
 
     const annotations = [
@@ -264,7 +310,17 @@ function chart5() {
     .attr("width",xScale.bandwidth())
     .attr("height",function(d){return height-yScale(d.deaths);})
     .attr("x",function(d){ return margin.left + xScale(d.county); })
-    .attr("y",function(d) { return margin.top + yScale(d.deaths);});
+    .attr("y",function(d) { return margin.top + yScale(d.deaths);})
+    //start tooltip 
+    .on('mouseover', function(d) {      
+            div.transition()        
+                .duration(200)      
+                .style('opacity', .9);      
+            div.html('<p>  deaths:' + d.deaths + '</p>')  
+                .style('left', (d3.event.pageX) + 'px')     
+                .style('top', (d3.event.pageY - 28) + 'px');    
+        });
+    //end tooltip 
 
 
     const annotations = [
